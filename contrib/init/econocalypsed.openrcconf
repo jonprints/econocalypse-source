@@ -1,0 +1,26 @@
+# /etc/conf.d/econocalypsed: config file for /etc/init.d/econocalypsed
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/econocalypse/econocalypse.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/econocalypsed"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/econocalypsed.pid"
+
+# Where to write econocalypsed data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/econocalypsed"
+
+# User and group to own econocalypsed process
+#BITCOIND_USER="econocalypse"
+#BITCOIND_GROUP="econocalypse"
+
+# Path to econocalypsed executable
+#BITCOIND_BIN="/usr/bin/econocalypsed"
+
+# Nice value to run econocalypsed under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""

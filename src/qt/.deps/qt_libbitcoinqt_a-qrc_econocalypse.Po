@@ -1,0 +1,4 @@
+qt/qt_libbitcoinqt_a-qrc_econocalypse.o: qt/qrc_econocalypse.cpp \
+ /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

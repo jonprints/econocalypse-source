@@ -1,0 +1,36 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/econocalypse_bg.qm</file>
+        <file alias="ca">locale/econocalypse_ca.qm</file>
+        <file alias="cs">locale/econocalypse_cs.qm</file>
+        <file alias="da">locale/econocalypse_da.qm</file>
+        <file alias="de">locale/econocalypse_de.qm</file>
+        <file alias="en">locale/econocalypse_en.qm</file>
+        <file alias="en_US">locale/econocalypse_en_US.qm</file>
+        <file alias="eo">locale/econocalypse_eo.qm</file>
+        <file alias="es">locale/econocalypse_es.qm</file>
+        <file alias="es_ES">locale/econocalypse_es_ES.qm</file>
+        <file alias="fi">locale/econocalypse_fi.qm</file>
+        <file alias="fr_FR">locale/econocalypse_fr_FR.qm</file>
+        <file alias="hi_IN">locale/econocalypse_hi_IN.qm</file>
+        <file alias="hr">locale/econocalypse_hr.qm</file>
+        <file alias="hr_HR">locale/econocalypse_hr_HR.qm</file>
+        <file alias="it">locale/econocalypse_it.qm</file>
+        <file alias="ja">locale/econocalypse_ja.qm</file>
+        <file alias="ko_KR">locale/econocalypse_ko_KR.qm</file>
+        <file alias="lt_LT">locale/econocalypse_lt_LT.qm</file>
+        <file alias="nl">locale/econocalypse_nl.qm</file>
+        <file alias="pl">locale/econocalypse_pl.qm</file>
+        <file alias="pt">locale/econocalypse_pt.qm</file>
+        <file alias="pt_BR">locale/econocalypse_pt_BR.qm</file>
+        <file alias="ro_RO">locale/econocalypse_ro_RO.qm</file>
+        <file alias="ru">locale/econocalypse_ru.qm</file>
+        <file alias="sk">locale/econocalypse_sk.qm</file>
+        <file alias="sv">locale/econocalypse_sv.qm</file>
+        <file alias="tr">locale/econocalypse_tr.qm</file>
+        <file alias="uk">locale/econocalypse_uk.qm</file>
+        <file alias="vi">locale/econocalypse_vi.qm</file>
+        <file alias="zh_CN">locale/econocalypse_zh_CN.qm</file>
+        <file alias="zh_TW">locale/econocalypse_zh_TW.qm</file>
+    </qresource>
+</RCC>

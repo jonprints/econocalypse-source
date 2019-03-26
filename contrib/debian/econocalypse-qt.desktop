@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Econocalypse
+Comment=Econocalypse P2P Cryptocurrency
+Comment[fr]=Econocalypse, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Econocalypse, eşten eşe kriptografik sanal para birimi
+Exec=econocalypse-qt %u
+Terminal=false
+Type=Application
+Icon=econocalypse128
+MimeType=x-scheme-handler/econocalypse;
+Categories=Office;Finance;
