@@ -116,8 +116,9 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle* networkStyle, QWidget* parent) : QMai
     this->setStyleSheet(GUIUtil::loadStyleSheet());
 
     GUIUtil::restoreWindowGeometry("nWindow", QSize(850, 550), this);
-
-    QString windowTitle = tr("Econocalypse Core") + " - ";
+    //also .OverviewPage is useful fro some stuff
+    this->setStyleSheet(".WalletFrame {background-image: url(\":images/bgtile\"); }");
+    QString windowTitle = tr("DobbsCoin Econocalypse") + " - ";
 #ifdef ENABLE_WALLET
     /* if compiled with wallet support, -disablewallet can still disable the wallet */
     enableWallet = !GetBoolArg("-disablewallet", false);

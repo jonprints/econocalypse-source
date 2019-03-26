@@ -337,6 +337,10 @@ RES_IMAGES = \
   qt/res/images/about.png \
   qt/res/images/splash.png \
   qt/res/images/splash_testnet.png \
+  qt/res/images/bgtile.png \
+  qt/res/images/overviewLeftBottom.png \
+  qt/res/images/overviewLeftTop.png \
+  qt/res/images/overviewRight.png \
   qt/res/images/econocalypse_logo_horizontal.png \
   qt/res/images/downArrow_dark.png \
   qt/res/images/downArrow_small_dark.png \

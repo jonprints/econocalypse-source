@@ -77,6 +77,10 @@
         <file alias="walletFrame">res/images/walletFrame.png</file>
         <file alias="splash">res/images/splash.png</file>
         <file alias="splash_testnet">res/images/splash_testnet.png</file>
+        <file alias="bgtile">res/images/bgtile.png</file>
+        <file alias="overviewLeftTop">res/images/overviewLeftTop.png</file>
+        <file alias="overviewLeftBottom">res/images/overviewLeftBottom.png</file>
+        <file alias="overviewRight">res/images/overviewRight.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
