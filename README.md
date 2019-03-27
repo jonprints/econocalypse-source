@@ -1,15 +1,15 @@
-# DobbsCoin v2.0 - Econocalypse
+# Econocalypse  (SLACK) /  DobbsCoin v2.0
 
 The Official CryptoCurrency of the Church of the SubGenius. http://www.subgenius.com
 
-The ONLY CryptoCurrency accepted on the Pleasure Saucers. https://www.dobbscoin.info
+& The ONLY CryptoCurrencies accepted on the Pleasure Saucers. https://www.dobbscoin.info
 
 DobbsCoin v2.0 - Econocalypse; is an excrimental "digital currency" - enabling the trading of instant Slack to anyone, anywhere in the world. DobbsCoin uses peer-to-peer technology. Managing "transactions" and issuing Slack is carried out collectively by the network without a central authority.
 
 Bitcoin Talk [ANN] Thread: https://bitcointalk.org/index.php?topic=5122755.0;all
 
 Download pre-compiled RELEASES here: windows / Linux / MAC / other..
-https://github.com/dobbscoin/dobbscoin-slack/releases
+https://github.com/dobbscoin/econocalypse-source/releases
 
 Coin properties:
 Website URL   http://www.dobbscoin.info
@@ -28,10 +28,10 @@ Last PoW block   block 13013
 Masternode reward   50%
 Masternode amount   10,000 SLACK
 Masternode confirmations   300
-Coinbase maturity   20 blocks
+Coinbase maturity   30 blocks
 Target spacing   2 minutes
 Target timespan   2 minutes
-Transaction confirmations   10 blocks
+Transaction confirmations   15 blocks
 
 Node 1   node1.dobbscoin.info
 
