@@ -1,1 +1,1 @@
-THIS  SPACE  INTENTIONALLY  LEFT  BLANK
+To practise and preach the same things is utter madness. Sometimes communication must be made More Difficult and Irritating than Necessary, in order to conve certain dangerous complexities. The knowledge must not fall into the wrong hands.
