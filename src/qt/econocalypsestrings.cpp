@@ -235,10 +235,10 @@ QT_TRANSLATE_NOOP("econocalypse-core", ""
 QT_TRANSLATE_NOOP("econocalypse-core", ""
 "You must specify a masternodeprivkey in the configuration. Please see "
 "documentation for help."),
-QT_TRANSLATE_NOOP("econocalypse-core", "(7056 could be used only on mainnet)"),
+QT_TRANSLATE_NOOP("econocalypse-core", "(13013 could be used only on mainnet)"),
 QT_TRANSLATE_NOOP("econocalypse-core", "(default: %s)"),
 QT_TRANSLATE_NOOP("econocalypse-core", "(default: 1)"),
-QT_TRANSLATE_NOOP("econocalypse-core", "(must be 7056 for mainnet)"),
+QT_TRANSLATE_NOOP("econocalypse-core", "(must be 13013 for mainnet)"),
 QT_TRANSLATE_NOOP("econocalypse-core", "<category> can be:"),
 QT_TRANSLATE_NOOP("econocalypse-core", "Accept command line and JSON-RPC commands"),
 QT_TRANSLATE_NOOP("econocalypse-core", "Accept connections from outside (default: 1 if no -proxy or -connect)"),

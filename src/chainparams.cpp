@@ -113,7 +113,7 @@ public:
         pchMessageStart[2] = 0x5f;
         pchMessageStart[3] = 0xcc;
         vAlertPubKey = ParseHex("040b5526330c8f95601b1890a18b9ff0e1cfae0c59cfad9c4cc33123071ab59f573510acc3d708aa29cf4c65d5ce79b42804f274f68110176c84597aee724493e4");
-        nDefaultPort = 7056;
+        nDefaultPort = 13013;
         bnProofOfWorkLimit = ~uint256(0) >> 20; // Econocalypse starting difficulty is 1 / 2^12
         nSubsidyHalvingInterval = 210000;
         nMaxReorganizationDepth = 100;
@@ -239,7 +239,7 @@ public:
         pchMessageStart[2] = 0x0f;
         pchMessageStart[3] = 0x33;
         vAlertPubKey = ParseHex("041f554969f7ec96e4405f4a83bb4ee01230e99eed0e25a27924fb8534a468db0b02c8a44fb7aa2e67caaa1766957e53e70099670f09815460d28cc2cebb7ca8a3");
-        nDefaultPort = 17056;
+        nDefaultPort = 13011;
         nEnforceBlockUpgradeMajority = 51;
         nRejectBlockOutdatedMajority = 75;
         nToCheckBlockUpgradeMajority = 100;
