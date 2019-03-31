@@ -34,7 +34,7 @@ Contains files used to package bitcoind/bitcoin-qt
 for Debian-based Linux systems. If you compile bitcoind/bitcoin-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Gavin's notes on getting gitian builds up and running using KVM
+Gavin's notes on getting gitian builds up and running using KVM.
 
 ### [Gitian-downloader](/contrib/gitian-downloader)
 Various PGP files of core developers. 
