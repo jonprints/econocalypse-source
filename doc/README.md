@@ -1,9 +1,9 @@
-Econocalypse Core
+Econocalypse
 =====================
 
 Setup
 --------------------
-[Econocalypse Core](http://econocalypse.org/wallet) is the original Econocalypse client and it builds the backbone of the network. However, it downloads and stores the entire history of Econocalypse transactions; depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more. Thankfully you only have to do this once.
+[Econocalypse](https://bitcointalk.org/index.php?topic=5122755;all) is the p2p wallet client and it builds the backbone of the network. It downloads the 'Holy Ledger and synchronizes transactions between clients. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more. Thankfully you only have to do this once.
 
 Running
 ---------------------
@@ -26,11 +26,7 @@ Drag Econocalypse-Qt to your applications folder, and then run Econocalypse-Qt.
 
 ### Need Help?
 
-* See the documentation at the [Econocalypse Wiki](https://en.bitcoin.it/wiki/Main_Page) ***TODO***
-for help and more information.
-* Ask for help on [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or on the [Econocalypse Forum](http://forum.econocalypse.org/).
-* Join our Discord server [Discord Server](https://discord.econocalypse.org)
-* Join one of our Slack groups [Econocalypse Slack Groups](https://econocalypse.org/slack-logins/) (Main community is replaced by Discord).
+FREENODE IRC #DobbsCoin
 
 Building
 ---------------------
@@ -42,7 +38,7 @@ The following are developer notes on how to build Econocalypse on your native pl
 
 Development
 ---------------------
-The Econocalypse repo's [root README](https://github.com/Econocalypse-Project/Econocalypse/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Econocalypse repo's [root README](https://github.com/dobbscoin/econocalypse-source/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
@@ -56,9 +52,8 @@ The Econocalypse repo's [root README](https://github.com/Econocalypse-Project/Ec
 
 ### Resources
 
-* Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [Econocalypse](http://forum.econocalypse.org/) forum.
-* Join the [Econocalypse-Dev](https://econocalypse-dev.slack.com/) Slack group ([Sign-Up](https://econocalypse-dev.herokuapp.com/)).
-
+ Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=5122755;all) 
+ 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
 - [Files](files.md)
@@ -68,5 +63,4 @@ The Econocalypse repo's [root README](https://github.com/Econocalypse-Project/Ec
 License
 ---------------------
 Distributed under the [MIT/X11 software license](http://www.opensource.org/licenses/mit-license.php).
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
-cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.
+This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.
