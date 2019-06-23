@@ -1,6 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2018 The PIVX developers
+// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2019 The SLACK developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,7 +14,6 @@
 #include "guiutil.h"
 #include "init.h"
 #include "obfuscation.h"
-#include "obfuscationconfig.h"
 #include "optionsmodel.h"
 #include "transactionfilterproxy.h"
 #include "transactionrecord.h"
@@ -35,7 +35,7 @@ class TxViewDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
-    TxViewDelegate() : QAbstractItemDelegate(), unit(BitcoinUnits::SLACK)
+    TxViewDelegate() : QAbstractItemDelegate(), unit(BitcoinUnits::PIV)
     {
     }
 
@@ -59,17 +59,6 @@ public:
         qint64 amount = index.data(TransactionTableModel::AmountRole).toLongLong();
         bool confirmed = index.data(TransactionTableModel::ConfirmedRole).toBool();
 
-        // Check transaction status
-        int nStatus = index.data(TransactionTableModel::StatusRole).toInt();
-        bool fConflicted = false;
-        if (nStatus == TransactionStatus::Conflicted || nStatus == TransactionStatus::NotAccepted) {
-            fConflicted = true; // Most probably orphaned, but could have other reasons as well
-        }
-        bool fImmature = false;
-        if (nStatus == TransactionStatus::Immature) {
-            fImmature = true;
-        }
-
         QVariant value = index.data(Qt::ForegroundRole);
         QColor foreground = COLOR_BLACK;
         if (value.canConvert<QBrush>()) {
@@ -87,15 +76,9 @@ public:
             iconWatchonly.paint(painter, watchonlyRect);
         }
 
-        if(fConflicted) { // No need to check anything else for conflicted transactions
-            foreground = COLOR_CONFLICTED;
-        } else if (!confirmed || fImmature) {
-            foreground = COLOR_UNCONFIRMED;
-        } else if (amount < 0) {
+        if (amount < 0)
             foreground = COLOR_NEGATIVE;
-        } else {
-            foreground = COLOR_BLACK;
-        }
+
         painter->setPen(foreground);
         QString amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
         if (!confirmed) {
@@ -164,7 +147,7 @@ OverviewPage::~OverviewPage()
     delete ui;
 }
 
-void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBalance, QString& sSLACKPercentage, QString& szSLACKPercentage)
+void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBalance, QString& sPIVPercentage, QString& szPIVPercentage)
 {
     int nPrecision = 2;
     double dzPercentage = 0.0;
@@ -182,13 +165,13 @@ void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBala
     }
 
     double dPercentage = 100.0 - dzPercentage;
-    
-    szSLACKPercentage = "(" + QLocale(QLocale::system()).toString(dzPercentage, 'f', nPrecision) + " %)";
-    sSLACKPercentage = "(" + QLocale(QLocale::system()).toString(dPercentage, 'f', nPrecision) + " %)";
-    
+
+    szPIVPercentage = "(" + QLocale(QLocale::system()).toString(dzPercentage, 'f', nPrecision) + " %)";
+    sPIVPercentage = "(" + QLocale(QLocale::system()).toString(dPercentage, 'f', nPrecision) + " %)";
+
 }
 
-void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, 
+void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
                               const CAmount& zerocoinBalance, const CAmount& unconfirmedZerocoinBalance, const CAmount& immatureZerocoinBalance,
                               const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance)
 {
@@ -208,37 +191,42 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
         nLockedBalance = pwalletMain->GetLockedCoins();
         nWatchOnlyLockedBalance = pwalletMain->GetLockedWatchOnlyBalance();
     }
-    // SLACK Balance
-    CAmount nTotalBalance = balance + unconfirmedBalance + nLockedBalance + immatureBalance;
-    CAmount slackAvailableBalance = balance;
-    CAmount nTotalWatchBalance = watchOnlyBalance + watchUnconfBalance + watchImmatureBalance;    
-    CAmount nUnlockedBalance = nTotalBalance - nLockedBalance - nLockedBalance; // increment nLockedBalance twice because it was added to
-                                                                                // nTotalBalance above
-    // zSLACK Balance
+
+    // PIV Balance
+    CAmount nTotalBalance = balance + unconfirmedBalance;
+    CAmount pivAvailableBalance = balance - immatureBalance - nLockedBalance;
+    CAmount nUnlockedBalance = nTotalBalance - nLockedBalance;
+
+    // PIV Watch-Only Balance
+    CAmount nTotalWatchBalance = watchOnlyBalance + watchUnconfBalance;
+    CAmount nAvailableWatchBalance = watchOnlyBalance - watchImmatureBalance - nWatchOnlyLockedBalance;
+
+    // zPIV Balance
     CAmount matureZerocoinBalance = zerocoinBalance - unconfirmedZerocoinBalance - immatureZerocoinBalance;
+
     // Percentages
     QString szPercentage = "";
     QString sPercentage = "";
     getPercentage(nUnlockedBalance, zerocoinBalance, sPercentage, szPercentage);
     // Combined balances
-    CAmount availableTotalBalance = slackAvailableBalance + matureZerocoinBalance;
+    CAmount availableTotalBalance = pivAvailableBalance + matureZerocoinBalance;
     CAmount sumTotalBalance = nTotalBalance + zerocoinBalance;
 
-    // SLACK labels
-    ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, slackAvailableBalance, false, BitcoinUnits::separatorAlways));
+    // PIV labels
+    ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, pivAvailableBalance, false, BitcoinUnits::separatorAlways));
     ui->labelUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, unconfirmedBalance, false, BitcoinUnits::separatorAlways));
     ui->labelImmature->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, immatureBalance, false, BitcoinUnits::separatorAlways));
     ui->labelLockedBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nLockedBalance, false, BitcoinUnits::separatorAlways));
     ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nTotalBalance, false, BitcoinUnits::separatorAlways));
 
     // Watchonly labels
-    ui->labelWatchAvailable->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, watchOnlyBalance, false, BitcoinUnits::separatorAlways));
+    ui->labelWatchAvailable->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nAvailableWatchBalance, false, BitcoinUnits::separatorAlways));
     ui->labelWatchPending->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, watchUnconfBalance, false, BitcoinUnits::separatorAlways));
     ui->labelWatchImmature->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, watchImmatureBalance, false, BitcoinUnits::separatorAlways));
     ui->labelWatchLocked->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nWatchOnlyLockedBalance, false, BitcoinUnits::separatorAlways));
     ui->labelWatchTotal->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nTotalWatchBalance, false, BitcoinUnits::separatorAlways));
 
-    // zSLACK labels
+    // zPIV labels
     ui->labelzBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, zerocoinBalance, false, BitcoinUnits::separatorAlways));
     ui->labelzBalanceUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, unconfirmedZerocoinBalance, false, BitcoinUnits::separatorAlways));
     ui->labelzBalanceMature->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, matureZerocoinBalance, false, BitcoinUnits::separatorAlways));
@@ -249,11 +237,11 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     ui->labelTotalz->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, sumTotalBalance, false, BitcoinUnits::separatorAlways));
 
     // Percentage labels
-    ui->labelSLACKPercent->setText(sPercentage);
-    ui->labelzSLACKPercent->setText(szPercentage);
+    ui->labelPIVPercent->setText(sPercentage);
+    ui->labelzPIVPercent->setText(szPercentage);
 
     // Adjust bubble-help according to AutoMint settings
-    QString automintHelp = tr("Current percentage of zSLACK.\nIf AutoMint is enabled this percentage will settle around the configured AutoMint percentage (default = 10%).\n");
+    QString automintHelp = tr("Current percentage of zPIV.\nIf AutoMint is enabled this percentage will settle around the configured AutoMint percentage (default = 10%).\n");
     bool fEnableZeromint = GetBoolArg("-enablezeromint", true);
     int nZeromintPercentage = GetArg("-zeromintpercentage", 10);
     if (fEnableZeromint) {
@@ -267,42 +255,56 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     // Only show most balances if they are non-zero for the sake of simplicity
     QSettings settings;
     bool settingShowAllBalances = !settings.value("fHideZeroBalances").toBool();
+
     bool showSumAvailable = settingShowAllBalances || sumTotalBalance != availableTotalBalance;
     ui->labelBalanceTextz->setVisible(showSumAvailable);
     ui->labelBalancez->setVisible(showSumAvailable);
-    bool showSLACKAvailable = settingShowAllBalances || slackAvailableBalance != nTotalBalance;
-    bool showWatchOnlySLACKAvailable = watchOnlyBalance != nTotalWatchBalance;
-    bool showSLACKPending = settingShowAllBalances || unconfirmedBalance != 0;
-    bool showWatchOnlySLACKPending = watchUnconfBalance != 0;
-    bool showSLACKLocked = settingShowAllBalances || nLockedBalance != 0;
-    bool showWatchOnlySLACKLocked = nWatchOnlyLockedBalance != 0;
-    bool showImmature = settingShowAllBalances || immatureBalance != 0;
-    bool showWatchOnlyImmature = watchImmatureBalance != 0;
+
     bool showWatchOnly = nTotalWatchBalance != 0;
-    ui->labelBalance->setVisible(showSLACKAvailable || showWatchOnlySLACKAvailable);
-    ui->labelBalanceText->setVisible(showSLACKAvailable || showWatchOnlySLACKAvailable);
-    ui->labelWatchAvailable->setVisible(showSLACKAvailable && showWatchOnly);
-    ui->labelUnconfirmed->setVisible(showSLACKPending || showWatchOnlySLACKPending);
-    ui->labelPendingText->setVisible(showSLACKPending || showWatchOnlySLACKPending);
-    ui->labelWatchPending->setVisible(showSLACKPending && showWatchOnly);
-    ui->labelLockedBalance->setVisible(showSLACKLocked || showWatchOnlySLACKLocked);
-    ui->labelLockedBalanceText->setVisible(showSLACKLocked || showWatchOnlySLACKLocked);
-    ui->labelWatchLocked->setVisible(showSLACKLocked && showWatchOnly);
-    ui->labelImmature->setVisible(showImmature || showWatchOnlyImmature); // for symmetry reasons also show immature label when the watch-only one is shown
-    ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
-    ui->labelWatchImmature->setVisible(showImmature && showWatchOnly); // show watch-only immature balance
-    bool showzSLACKAvailable = settingShowAllBalances || zerocoinBalance != matureZerocoinBalance;
-    bool showzSLACKUnconfirmed = settingShowAllBalances || unconfirmedZerocoinBalance != 0;
-    bool showzSLACKImmature = settingShowAllBalances || immatureZerocoinBalance != 0;
-    ui->labelzBalanceMature->setVisible(showzSLACKAvailable);
-    ui->labelzBalanceMatureText->setVisible(showzSLACKAvailable);
-    ui->labelzBalanceUnconfirmed->setVisible(showzSLACKUnconfirmed);
-    ui->labelzBalanceUnconfirmedText->setVisible(showzSLACKUnconfirmed);
-    ui->labelzBalanceImmature->setVisible(showzSLACKImmature);
-    ui->labelzBalanceImmatureText->setVisible(showzSLACKImmature);
+
+    // PIV Available
+    bool showPIVAvailable = settingShowAllBalances || pivAvailableBalance != nTotalBalance;
+    bool showWatchOnlyPIVAvailable = showPIVAvailable || nAvailableWatchBalance != nTotalWatchBalance;
+    ui->labelBalanceText->setVisible(showPIVAvailable || showWatchOnlyPIVAvailable);
+    ui->labelBalance->setVisible(showPIVAvailable || showWatchOnlyPIVAvailable);
+    ui->labelWatchAvailable->setVisible(showWatchOnlyPIVAvailable && showWatchOnly);
+
+    // PIV Pending
+    bool showPIVPending = settingShowAllBalances || unconfirmedBalance != 0;
+    bool showWatchOnlyPIVPending = showPIVPending || watchUnconfBalance != 0;
+    ui->labelPendingText->setVisible(showPIVPending || showWatchOnlyPIVPending);
+    ui->labelUnconfirmed->setVisible(showPIVPending || showWatchOnlyPIVPending);
+    ui->labelWatchPending->setVisible(showWatchOnlyPIVPending && showWatchOnly);
+
+    // PIV Immature
+    bool showPIVImmature = settingShowAllBalances || immatureBalance != 0;
+    bool showWatchOnlyImmature = showPIVImmature || watchImmatureBalance != 0;
+    ui->labelImmatureText->setVisible(showPIVImmature || showWatchOnlyImmature);
+    ui->labelImmature->setVisible(showPIVImmature || showWatchOnlyImmature); // for symmetry reasons also show immature label when the watch-only one is shown
+    ui->labelWatchImmature->setVisible(showWatchOnlyImmature && showWatchOnly); // show watch-only immature balance
+
+    // PIV Locked
+    bool showPIVLocked = settingShowAllBalances || nLockedBalance != 0;
+    bool showWatchOnlyPIVLocked = showPIVLocked || nWatchOnlyLockedBalance != 0;
+    ui->labelLockedBalanceText->setVisible(showPIVLocked || showWatchOnlyPIVLocked);
+    ui->labelLockedBalance->setVisible(showPIVLocked || showWatchOnlyPIVLocked);
+    ui->labelWatchLocked->setVisible(showWatchOnlyPIVLocked && showWatchOnly);
+
+    // zPIV
+    bool showzPIVAvailable = settingShowAllBalances || zerocoinBalance != matureZerocoinBalance;
+    bool showzPIVUnconfirmed = settingShowAllBalances || unconfirmedZerocoinBalance != 0;
+    bool showzPIVImmature = settingShowAllBalances || immatureZerocoinBalance != 0;
+    ui->labelzBalanceMature->setVisible(showzPIVAvailable);
+    ui->labelzBalanceMatureText->setVisible(showzPIVAvailable);
+    ui->labelzBalanceUnconfirmed->setVisible(showzPIVUnconfirmed);
+    ui->labelzBalanceUnconfirmedText->setVisible(showzPIVUnconfirmed);
+    ui->labelzBalanceImmature->setVisible(showzPIVImmature);
+    ui->labelzBalanceImmatureText->setVisible(showzPIVImmature);
+
+    // Percent split
     bool showPercentages = ! (zerocoinBalance == 0 && nTotalBalance == 0);
-    ui->labelSLACKPercent->setVisible(showPercentages);
-    ui->labelzSLACKPercent->setVisible(showPercentages);
+    ui->labelPIVPercent->setVisible(showPercentages);
+    ui->labelzPIVPercent->setVisible(showPercentages);
 
     static int cachedTxLocks = 0;
 
@@ -361,20 +363,25 @@ void OverviewPage::setWalletModel(WalletModel* model)
 
         // Keep up to date with wallet
         setBalance(model->getBalance(), model->getUnconfirmedBalance(), model->getImmatureBalance(),
-                   model->getZerocoinBalance(), model->getUnconfirmedZerocoinBalance(), model->getImmatureZerocoinBalance(), 
+                   model->getZerocoinBalance(), model->getUnconfirmedZerocoinBalance(), model->getImmatureZerocoinBalance(),
                    model->getWatchBalance(), model->getWatchUnconfirmedBalance(), model->getWatchImmatureBalance());
-        connect(model, SIGNAL(balanceChanged(CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount)), this, 
+        connect(model, SIGNAL(balanceChanged(CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount)), this,
                          SLOT(setBalance(CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount, CAmount)));
 
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
         connect(model->getOptionsModel(), SIGNAL(hideZeroBalancesChanged(bool)), this, SLOT(updateDisplayUnit()));
+        connect(model->getOptionsModel(), SIGNAL(hideOrphansChanged(bool)), this, SLOT(hideOrphans(bool)));
 
         updateWatchOnlyLabels(model->haveWatchOnly());
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("SLACK")
+    // update the display unit, to not use the default ("PIV")
     updateDisplayUnit();
+
+    // Hide orphans
+    QSettings settings;
+    hideOrphans(settings.value("fHideOrphans", false).toBool());
 }
 
 void OverviewPage::updateDisplayUnit()
@@ -402,4 +409,10 @@ void OverviewPage::showOutOfSyncWarning(bool fShow)
 {
     ui->labelWalletStatus->setVisible(fShow);
     ui->labelTransactionsStatus->setVisible(fShow);
+}
+
+void OverviewPage::hideOrphans(bool fHide)
+{
+    if (filter)
+        filter->setHideOrphans(fHide);
 }
